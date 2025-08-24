@@ -57,16 +57,3 @@ The system helps academies track student progress, organise class timetables, an
 - Analytics dashboard for attendance trends.
 
 ----
-
-### Database System Choice and Justification
-
-For this project, PostgreSQL was selected as the database system of choice. As a relational database management system (RDBMS), PostgreSQL is well suited to applications requiring structured data, clearly defined relationships, and strong data integrity.In the context of the BJJ Academy Management System, the data model relies heavily on relationships between entities such as students, instructors, classes, schedules, and attendance records. PostgreSQL thus provides the relational structure and enforcement of constraints (primary keys, foreign keys, unique values) that are essential for this type of system.
-
-
-### Comparison to Non‑Relational Databases (e.g. MongoDB):
-
-
-### Comparison to Other Relational Databases (e.g. MySQL, SQLite):
-
-
-Other relational systems such as MySQL and SQLite were also considered.
