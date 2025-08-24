@@ -6,7 +6,37 @@ The system helps academies track student progress, organise class timetables, an
 
 ---
 
-## Potential Features
+## Features
+- Manage **students** (belt rank, contact, monthly fee, etc.)
+- Manage **instructors** (rank, specialisation, hourly rate)
+- Organise **classes** (type, difficulty, capacity, duration)
+- Create **schedules** (day, time, linked to classes)
+- Record **attendance** (student presence/absence per class)
+
+
+---
+## Planning Document
+
+The full planning stage (ERD, 3NF normalisation, database choice, API design, validation plan, feedback log) is available here: [PLANNING.md](./PLANNING.md)
+
+---
+
+## Tech Stack
+- **Flask** – lightweight web framework
+- **Flask-SQLAlchemy** – ORM integration
+- **PostgreSQL** – relational database
+- **psycopg2** – Postgres driver
+- **python-dotenv** – environment variable management
+---
+
+## Setup & Installation
+
+---
+
+## Deployment
+
+
+## Potential Features (to sort later)
 
 ### Create
 - **Students**: Add new students with details such as:
