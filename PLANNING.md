@@ -154,3 +154,11 @@ Attendance (CRUD)
 
 
 ## 9) Deployment Plan (Preview)
+---
+
+## 10) Potential Roadmap (Future Enhancements)
+
+- Authentication (admin/instructor logins).
+- Student portal for attendance & belt progress.
+- Automated fee reminders.
+- Analytics dashboard for attendance/class utilisation.
