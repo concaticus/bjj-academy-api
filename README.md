@@ -30,6 +30,10 @@ The full planning stage (ERD, 3NF normalisation, database choice, API design, va
 ---
 
 ## Setup & Installation
+1. Clone the repo
+2. Create and activate a virtual environment
+3. Install dependencies: `pip install -r requirements.txt`
+4. Run the app: `python app.py`
 
 ---
 
