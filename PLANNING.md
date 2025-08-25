@@ -16,9 +16,6 @@ The following ERD represents the entities, attributes, and relationships in the 
 
 ### 1.2 DBML Definition
 
-// Use DBML to define your database structure
-// Docs: https://dbml.dbdiagram.io/docs
-
 Table students {
   student_id int [pk, increment]
   name varchar(100)
@@ -65,11 +62,15 @@ Table class_schedules {
 
 Table attendance {
   attendance_id int [pk, increment]
-  student_id int [not null, ref: > students.student_id]
-  schedule_id int [not null, ref: > class_schedules.schedule_id]
+  student_id int [not null, ref: > students.student_id] // FK to students
+  schedule_id int [not null, ref: > class_schedules.schedule_id] // FK to class_schedules
   attendance_date date [not null]
   status varchar(20) [not null] // present, absent, late
   notes text
+
+  indexes {
+    (student_id, schedule_id, attendance_date) [unique] // prevent duplicate check-ins
+  }
 }
 
 ---
@@ -86,7 +87,7 @@ The database for the BJJ Academy Management System has been designed to meet the
 - 2NF only applies to tables with **composite primary keys**.
 - In this schema, the `class_instructors` table has a composite key (`instructor_id, class_id`). Its non‑key attribute (`role`) depends on the whole key, not part of it, so it satisfies 2NF.
 - All other tables use a single‑column surrogate primary key (e.g. `student_id`, `class_id`, `attendance_id`). These are automatically in 2NF if they are in 1NF.
-- The `attendance` table uses a surrogate PK (`attendance_id`). To prevent duplicate check‑ins, a **candidate key** (`student_id, schedule_id, attendance_date`) could be enforced with a UNIQUE constraint.
+- The `attendance` table uses a surrogate PK (`attendance_id`). To prevent duplicate check‑ins, a **candidate key** (`student_id, schedule_id, attendance_date`) is enforced with a UNIQUE constraint. This ensures that a student can attend multiple different classes on the same day, but only once per schedule per date. This supports real‑world business rules while maintaining compliance with 3NF.
 
 ### Third Normal Form (3NF)
 - All non‑key attributes depend only on the key, the whole key, and nothing but the key.
@@ -143,6 +144,7 @@ Attendance (CRUD)
 ---
 
 ## 5) Validation & Sanitisation Plan
+- Marshmellow
 ---
 
 
