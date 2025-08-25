@@ -14,18 +14,56 @@ The following ERD represents the entities, attributes, and relationships in the 
 ![ERD Diagram](./docs/ERD.png)
 - add screenshot of ERD
 
-### 1.2 DBML Definition
+### 1.3 Database Design (SQL schema + integrity rules)
+The following SQL-style definitions illustrate how the ERD is implemented in PostgreSQL, including both integrity checks and constraints.
+
+Students Table (shows constraints and business rules):
+CREATE TABLE students (
+    student_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    belt_rank VARCHAR(20) NOT NULL CHECK (belt_rank IN ('White','Blue','Purple','Brown','Black')),
+    stripe_count INTEGER DEFAULT 0 CHECK (stripe_count BETWEEN 0 AND 4),
+    join_date DATE NOT NULL,
+    monthly_fee DECIMAL(10,2) NOT NULL CHECK (monthly_fee >= 0),
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+Attendence Table (showing unique constraint):
+CREATE TABLE attendance (
+    attendance_id SERIAL PRIMARY KEY,
+    student_id INTEGER NOT NULL REFERENCES students(student_id),
+    schedule_id INTEGER NOT NULL REFERENCES class_schedules(schedule_id),
+    attendance_date DATE NOT NULL,
+    status VARCHAR(20) NOT NULL CHECK (status IN ('present', 'absent', 'late')),
+    notes TEXT,
+    UNIQUE(student_id, schedule_id, attendance_date)
+);
+
+Junction Table (showing many-many relationship):
+CREATE TABLE class_instructors (
+    instructor_id INTEGER REFERENCES instructors(instructor_id),
+    class_id INTEGER REFERENCES classes(class_id),
+    role VARCHAR(50),
+    PRIMARY KEY (instructor_id, class_id)
+);
+
+Note: other tables (such as `instructors`, `classes`, `class_schedules`) follow similar patterns with appropriate constraints and foreign key relationships as defined in the DBML schema below.
+
+
+### 1.3 DBML Definition
 
 Table students {
   student_id int [pk, increment]
-  name varchar(100)
+  name varchar(100) [not null]
   email varchar(120) [unique, not null]
-  phone varchar(20) // Added phone field
-  belt_rank varchar(20) [not null] // White, Blue, Purple, Brown, Black
-  stripe_count int [default: 0, note: 'Should be 0-4']
+  phone varchar(20)
+  belt_rank varchar(20) [not null, note: 'Must be one of White, Blue, Purple, Brown, Black']
+  stripe_count int [default: 0, note: 'Must be between 0 and 4']
   join_date date [not null]
-  monthly_fee numeric(10,2) [not null]
-  is_active boolean [default: true] // Added instead of deleting records
+  monthly_fee numeric(10,2) [not null, note: 'Must be >= 0']
+  is_active boolean [default: true]
 }
 
 Table instructors {
@@ -72,6 +110,15 @@ Table attendance {
     (student_id, schedule_id, attendance_date) [unique] // prevent duplicate check-ins
   }
 }
+
+
+
+
+
+
+
+
+
 
 ---
 ## 2) Normalisation (3NF)
@@ -162,7 +209,7 @@ Attendance (CRUD)
 | Date       | Source     | Feedback |
 |------------|------------|----------|
 | 2025-08-22 | Teacher    | Instructors and classes: one-to-many or many-to-many? |
-| YYYY-MM-DD | Peer/Other | _(Add feedback here)_ |
+| YYYY-MM-DD | Peer/Other | _(Add details here)_ |
 
 ---
 
@@ -173,7 +220,7 @@ Attendance (CRUD)
 - **Justification:** This reflects the real-world scenario: a class may have multiple instructors (head coach, assistant), and instructors often teach multiple classes.
 
 **YYYY-MM-DD – Peer/Other Feedback**
-- **Response:** _(Write your change here)_
+- **Response:** _(Write changes here)_
 - **Justification:** _(Explain why the change was appropriate or why you chose not to change anything)_
 
 ---
